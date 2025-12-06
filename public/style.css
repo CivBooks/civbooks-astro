@@ -1,0 +1,184 @@
+html {
+    color: #111;
+    background-color: #def;
+}
+
+body {
+    margin: 0;
+    padding: 16px;
+    font: 16px / 1.5 sans-serif;
+}
+
+body > header,
+body > h1,
+body > h2,
+body > form,
+body > div,
+body > p,
+body > footer {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 584px; /* two book pages wide */
+}
+
+h1, h2, h3 {
+    line-height: 1.25;
+}
+
+a {
+    color: #008;
+}
+a:visited {
+    color: #55c;
+}
+
+.muted, .muted:visited, .muted a, .muted a:visited {
+    color: #888;
+}
+
+.hidden {
+    display: none;
+}
+
+.error {
+    padding: 0.5em;
+    background-color: #f88;
+}
+
+.warning {
+    padding: 0.5em;
+    background-color: #fe5;
+}
+
+@media print {
+    body {
+        max-width: none;
+    }
+}
+
+@font-face { font-family: 'minecraft pixel perfect'; src: url('/font/Minecraft-Regular.otf'); }
+@font-face { font-family: 'minecraft pixel perfect'; src: url('/font/Minecraft-Bold.ttf'); font-weight: bold; }
+
+.author-face {
+    float: right;
+    width: 3em;
+    height: 3em;
+    margin-left: 1em;
+    clear: both;
+    overflow: hidden;
+}
+
+.book {
+    margin: 1em auto 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: space-around;
+    min-width: 260px; /* page width - 2 * body margin */
+}
+
+.page {
+    image-rendering: pixelated;
+    background: url("/img/page.png") center;
+    width: 292px;
+    min-width: 292px;
+    height: 360px;
+    /* content/indicator are positioned absolutely */
+    position: relative;
+    font: 20px / 0.9em 'minecraft pixel perfect', serif;
+    color: black;
+    margin: 0.5em 0;
+}
+
+.page-indicator {
+    position: absolute;
+    top: 30px;
+    right: 36px;
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.page-content {
+    position: absolute;
+    top: 61px;
+    left: 32px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    width: 232px;
+    /* necessary for line breaking */
+}
+
+img.top-logo, img.bottom-logo {
+    width: 64px;
+}
+
+footer {
+    text-align: center;
+}
+
+footer,
+#search-hints,
+.search-hints {
+    border-top: 2px solid #ccc;
+    /* padding-top: 1em; */
+    margin-top: 1em;
+}
+
+.search-form {
+    display: flex;
+}
+
+.search-query {
+    flex-grow: 1;
+}
+
+.search-go {
+    flex-grow: 0;
+}
+
+.search-result {
+    margin: 1em 0;
+}
+
+.search-result .title {
+    font-size: 1.5em;
+    font-weight: bold;
+    display: block;
+}
+
+.search-result .signee,
+.search-result .server,
+.search-result .stats {
+    display: inline-block;
+    padding-left: 0.5em;
+}
+.search-result .stats {
+    float: right;
+}
+
+/* invisible but can be copypasted */
+.fmtcode {
+    font-size: 0;
+    line-height: 0;
+}
+
+.fmtl { font-weight: bold; }
+.fmto { font-style: italic; }
+.fmtn { text-decoration: underline; }
+.fmtm { text-decoration-line: line-through; }
+.fmt4 { color: #be0000; }
+.fmtc { color: #fe3f3f; }
+.fmt6 { color: #D9A334; }
+.fmte { color: #fefe3f; }
+.fmt2 { color: #00be00; }
+.fmta { color: #3ffe3f; }
+.fmtb { color: #3ffefe; }
+.fmt3 { color: #00bebe; }
+.fmt1 { color: #0000be; }
+.fmt9 { color: #3f3ffe; }
+.fmtd { color: #fe3ffe; }
+.fmt5 { color: #be00be; }
+.fmtf { color: #ffffff; }
+.fmt7 { color: #bebebe; }
+.fmt8 { color: #3f3f3f; }
+.fmt0 { color: #000000; }
