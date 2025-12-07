@@ -1,24 +1,31 @@
 ---
+import { getCollection, render } from "astro:content";
 import type { GetStaticPathsItem } from "astro";
-import { booksByPath } from "../../../../Book";
+import { getEntry } from "astro:content";
+// import { booksByPath } from "../../../../Book";
 
-export function getStaticPaths() {
-  return booksByPath
-    .keys()
-    .map((key): GetStaticPathsItem => {
-      const [server, signee, title] = key.split("/");
-      return { params: { server, signee, title } };
-    })
-    .toArray();
+export async function getStaticPaths() {
+  const books = await getCollection("books");
+
+  return books.map((entry): GetStaticPathsItem => {
+    let { server, signee, title } = entry.data;
+
+    return { params: { server, signee, title }, props: { book: entry } };
+  });
 }
 
-const book = (() => {
+// const { book } = Astro.props;
+const book = await (async () => {
   const { server, signee, title } = Astro.params;
   const key = [server, signee, title].join("/");
-  return booksByPath.get(key)!;
+  const entry = await getEntry("books", key);
+  if (!entry) {
+    throw new Error(`Could not find book ${key}`);
+  }
+  return entry;
 })();
 
-const { origin, signee, title, pages } = book;
+const { server: origin, signee, title, pages } = book.data;
 
 const safe_origin = origin.replaceAll(" ", "_").replaceAll(".0", "");
 
