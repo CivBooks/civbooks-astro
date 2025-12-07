@@ -8,13 +8,13 @@ export async function getStaticPaths() {
   const books = await getCollection("books");
 
   return books.map((entry): GetStaticPathsItem => {
-    let { server, signee, title } = entry.data;
+    let { id } = entry.data;
+    const [server, signee, title] = id.split("/");
 
     return { params: { server, signee, title }, props: { book: entry } };
   });
 }
 
-// const { book } = Astro.props;
 const book = await (async () => {
   const { server, signee, title } = Astro.params;
   const key = [server, signee, title].join("/");
