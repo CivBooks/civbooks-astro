@@ -4,7 +4,7 @@ import { readdirSync, readFileSync } from "fs";
 /** directory containing all book files */
 const root = `./books/`;
 
-const bookSchema = z.object({
+export const bookSchema = z.object({
   id: z.string(),
   server: z.string(),
   signee: z.string(),
@@ -12,7 +12,7 @@ const bookSchema = z.object({
   pages: z.array(z.string()),
 });
 
-type Book = z.infer<typeof bookSchema>;
+export type Book = z.infer<typeof bookSchema>;
 
 const clean = (s: string) =>
   s
