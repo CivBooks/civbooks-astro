@@ -2,7 +2,8 @@
 import { getCollection, render } from "astro:content";
 import type { GetStaticPathsItem } from "astro";
 import { getEntry } from "astro:content";
-// import { booksByPath } from "../../../../Book";
+
+import Footer from "../../../../components/Footer.astro";
 
 export async function getStaticPaths() {
   const books = await getCollection("books");
@@ -129,25 +130,6 @@ const description = `Signed by ${signee} on ${origin}. Read ${pages.length <= 1 
         })
       }
     </div>
-    <footer>
-      <p>
-        Part of the
-        <a
-          href="https://github.com/CivBooks"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Civ Books</a
-        >
-        project by
-        <a
-          href="https://github.com/Gjum"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Gjum</a
-        >.
-      </p>
-    </footer>
+    <Footer />
   </body>
 </html>

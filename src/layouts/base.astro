@@ -4,6 +4,7 @@ interface Props {
 }
 const { title } = Astro.props;
 import Search from "astro-pagefind/components/Search";
+import Footer from "../components/Footer.astro";
 ---
 
 <!doctype html>
@@ -30,5 +31,6 @@ import Search from "astro-pagefind/components/Search";
       <slot />
       <!-- content is injected in the slot element -->
     </article>
+    <Footer />
   </body>
 </html>
