@@ -79,12 +79,16 @@ const description = `Signed by ${signee} on ${origin}. Read ${pages.length <= 1 
       </a>
       <div class="signee">
         Signed by <a class="signee-name" href=`/?search=:signee:${signee}`>
-          {signee}
+          <span data-pagefind-weight="6" data-pagefind-filter="signee">
+            {signee}
+          </span>
         </a>
       </div>
-      <div class="source">
+      <div class="source" data-pagefind-weight="6">
         on <a class="source-server" href=`/?search=:server:${safe_origin}`>
-          {origin}
+          <span data-pagefind-weight="6" data-pagefind-filter="server">
+            {origin}
+          </span>
         </a>
       </div>
     </div>
