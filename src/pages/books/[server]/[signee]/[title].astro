@@ -3,6 +3,7 @@ import { getCollection, render } from "astro:content";
 import type { GetStaticPathsItem } from "astro";
 import { getEntry } from "astro:content";
 
+import CommonHead from "../../../../components/CommonHead.astro";
 import Footer from "../../../../components/Footer.astro";
 
 export async function getStaticPaths() {
@@ -35,23 +36,13 @@ const description = `Signed by ${signee} on ${origin}. Read ${pages.length <= 1 
 
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title} - by {signee} - Civ Books</title>
+    <CommonHead
+      title={`${title} - by ${signee} - Civ Books`}
+      description={description}
+    />
     <link rel="prefetch" href="/font/Minecraft-Regular.otf" />
     <link rel="prefetch" href="/img/page.png" />
     <link rel="stylesheet" href="/style.css" />
-    <link rel="shortcut icon" href="/img/icon.png" />
-    <meta property="og:type" content="object" />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:site_name" content="Civ Books" />
-    <meta property="og:url" content="https://CivBooks.github.io/" />
-    <meta
-      property="og:image"
-      content="https://CivBooks.github.io/img/icon.png"
-    />
   </head>
   <body id="top">
     <header>
