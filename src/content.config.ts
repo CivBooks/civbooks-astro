@@ -1,5 +1,6 @@
 import { defineCollection, z } from "astro:content";
 import { readdirSync, readFileSync } from "fs";
+import { sep as SEPERATOR } from "path";
 
 /** directory containing all book files */
 const root = `./books/`;
@@ -26,7 +27,7 @@ const parsers: { [ending: string]: (path: string) => Book } = {
       .toString()
       .replaceAll("\r", "");
 
-    let [server, signee, title] = path.split("/");
+    let [server, signee, title] = path.split(SEPERATOR);
 
     const [pre, post] = file.split("\npages:\n#- ");
 
