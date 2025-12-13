@@ -1,24 +1,33 @@
 ---
+import { getCollection, render } from "astro:content";
 import type { GetStaticPathsItem } from "astro";
-import { booksByPath } from "../../../../Book";
+import { getEntry } from "astro:content";
 
-export function getStaticPaths() {
-  return booksByPath
-    .keys()
-    .map((key): GetStaticPathsItem => {
-      const [server, signee, title] = key.split("/");
-      return { params: { server, signee, title } };
-    })
-    .toArray();
+import CommonHead from "../../../../components/CommonHead.astro";
+import Footer from "../../../../components/Footer.astro";
+
+export async function getStaticPaths() {
+  const books = await getCollection("books");
+
+  return books.map((entry): GetStaticPathsItem => {
+    let { id } = entry.data;
+    const [server, signee, title] = id.split("/");
+
+    return { params: { server, signee, title }, props: { book: entry } };
+  });
 }
 
-const book = (() => {
+const book = await (async () => {
   const { server, signee, title } = Astro.params;
   const key = [server, signee, title].join("/");
-  return booksByPath.get(key)!;
+  const entry = await getEntry("books", key);
+  if (!entry) {
+    throw new Error(`Could not find book ${key}`);
+  }
+  return entry;
 })();
 
-const { origin, signee, title, pages } = book;
+const { server: origin, signee, title, pages } = book.data;
 
 const safe_origin = origin.replaceAll(" ", "_").replaceAll(".0", "");
 
@@ -27,23 +36,13 @@ const description = `Signed by ${signee} on ${origin}. Read ${pages.length <= 1 
 
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title} - by {signee} - Civ Books</title>
+    <CommonHead
+      title={`${title} - by ${signee} - Civ Books`}
+      description={description}
+    />
     <link rel="prefetch" href="/font/Minecraft-Regular.otf" />
     <link rel="prefetch" href="/img/page.png" />
     <link rel="stylesheet" href="/style.css" />
-    <link rel="shortcut icon" href="/img/icon.png" />
-    <meta property="og:type" content="object" />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:site_name" content="Civ Books" />
-    <meta property="og:url" content="https://CivBooks.github.io/" />
-    <meta
-      property="og:image"
-      content="https://CivBooks.github.io/img/icon.png"
-    />
   </head>
   <body id="top">
     <header>
@@ -71,12 +70,16 @@ const description = `Signed by ${signee} on ${origin}. Read ${pages.length <= 1 
       </a>
       <div class="signee">
         Signed by <a class="signee-name" href=`/?search=:signee:${signee}`>
-          {signee}
+          <span data-pagefind-weight="6" data-pagefind-filter="signee">
+            {signee}
+          </span>
         </a>
       </div>
-      <div class="source">
+      <div class="source" data-pagefind-weight="6">
         on <a class="source-server" href=`/?search=:server:${safe_origin}`>
-          {origin}
+          <span data-pagefind-weight="6" data-pagefind-filter="server">
+            {origin}
+          </span>
         </a>
       </div>
     </div>
@@ -122,25 +125,6 @@ const description = `Signed by ${signee} on ${origin}. Read ${pages.length <= 1 
         })
       }
     </div>
-    <footer>
-      <p>
-        Part of the
-        <a
-          href="https://github.com/CivBooks"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Civ Books</a
-        >
-        project by
-        <a
-          href="https://github.com/Gjum"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Gjum</a
-        >.
-      </p>
-    </footer>
+    <Footer />
   </body>
 </html>

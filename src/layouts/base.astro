@@ -1,0 +1,33 @@
+---
+interface Props {
+  title: string;
+}
+const { title } = Astro.props;
+import Search from "astro-pagefind/components/Search";
+import Footer from "../components/Footer.astro";
+import CommonHead from "../components/CommonHead.astro";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <CommonHead title={title} description="" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="/">Home</a>
+        <Search
+          id="search1"
+          className="pagefind-ui"
+          uiOptions={{ showImages: false }}
+        />
+      </nav>
+    </header>
+    <article>
+      <slot />
+      <!-- content is injected in the slot element -->
+    </article>
+    <Footer />
+  </body>
+</html>
