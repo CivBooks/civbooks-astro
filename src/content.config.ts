@@ -15,35 +15,42 @@ export const bookSchema = z.object({
 
 export type Book = z.infer<typeof bookSchema>;
 
-const clean = (s: string) =>
-  s
+function clean(s: string) {
+  const cleaned = s
     .replaceAll(/[ ./\\%:?&#\'\"\[\]<>()]+/g, " ")
     .trim()
     .replaceAll(" ", "_");
+  return cleaned || s.replaceAll(/[ ./\\%:?&#\'\"\[\]<>()]/g, "_");
+}
 
 const parsers: { [ending: string]: (path: string) => Book } = {
   stendhal: (path: string) => {
-    const file = readFileSync(`${root}/${path}`)
-      .toString()
-      .replaceAll("\r", "");
+    try {
+      const fileRaw = readFileSync(`${root}/${path}`);
+      const file = fileRaw.toString().replaceAll("\r", "");
 
-    let [server, signee, title] = path.split(SEPERATOR);
+      let [server, signee, title] = path.split(SEPERATOR);
 
-    const [pre, post] = file.split("\npages:\n#- ");
+      const [pre, post] = file.split("\npages:\n#- ");
 
-    for (const line of pre.split("\n")) {
-      const [key, val] = line.split(":").map((s) => s.trim());
-      if (key === "title") title = val;
-      if (key === "author") signee = val;
+      for (const line of pre.split("\n")) {
+        const col = line.indexOf(":");
+        const key = line.substring(0, col);
+        const val = line.substring(1 + col).trim();
+        if (key === "title") title = val;
+        if (key === "author") signee = val;
+      }
+
+      const pages = post.split("\n#- ");
+      // remove empty pages at the end
+      while (pages.length && !pages.at(-1)) pages.pop();
+
+      const id = [server, signee, title].map(clean).join("/");
+      return { id, server, signee, title, pages };
+    } catch (err) {
+      console.error(`Error in ${path}:`, err);
+      throw err;
     }
-
-    const pages = post.split("\n#- ");
-    // remove empty pages at the end
-    while (!pages.at(-1)) pages.pop();
-
-    const id = [server, signee, title].map(clean).join("/");
-    console.log(`Parsed book: ${id} (${pages.length} pages)`);
-    return { id, server, signee, title, pages };
   },
 };
 

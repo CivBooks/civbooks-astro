@@ -9,11 +9,10 @@ import Footer from "../../../../components/Footer.astro";
 export async function getStaticPaths() {
   const books = await getCollection("books");
 
-  return books.map((entry): GetStaticPathsItem => {
-    let { id } = entry.data;
+  return books.map((book): GetStaticPathsItem => {
+    let { id } = book.data;
     const [server, signee, title] = id.split("/");
-
-    return { params: { server, signee, title }, props: { book: entry } };
+    return { params: { server, signee, title }, props: { book } };
   });
 }
 
@@ -27,11 +26,11 @@ const book = await (async () => {
   return entry;
 })();
 
-const { server: origin, signee, title, pages } = book.data;
+const { server, signee, title, pages } = book.data;
 
-const safe_origin = origin.replaceAll(" ", "_").replaceAll(".0", "");
+const safe_server = server.replaceAll(" ", "_").replaceAll(".0", "");
 
-const description = `Signed by ${signee} on ${origin}. Read ${pages.length <= 1 ? "it" : `all ${pages.length} pages`} here and discover more Civ books.`;
+const description = `Signed by ${signee} on ${server}. Read ${pages.length <= 1 ? "it" : `all ${pages.length} pages`} here and discover more Civ books.`;
 ---
 
 <html lang="en">
@@ -76,9 +75,9 @@ const description = `Signed by ${signee} on ${origin}. Read ${pages.length <= 1 
         </a>
       </div>
       <div class="source" data-pagefind-weight="6">
-        on <a class="source-server" href=`/?search=:server:${safe_origin}`>
+        on <a class="source-server" href=`/?search=:server:${safe_server}`>
           <span data-pagefind-weight="6" data-pagefind-filter="server">
-            {origin}
+            {server}
           </span>
         </a>
       </div>
