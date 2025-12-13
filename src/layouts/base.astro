@@ -1,22 +1,33 @@
 ---
+import Search from "astro-pagefind/components/Search";
+import CommonHead from "../components/CommonHead.astro";
+import Footer from "../components/Footer.astro";
+
 interface Props {
   title: string;
+  description?: string;
 }
-const { title } = Astro.props;
-import Search from "astro-pagefind/components/Search";
-import Footer from "../components/Footer.astro";
-import CommonHead from "../components/CommonHead.astro";
+const { title, description = "Read full books written on Civ servers." } =
+  Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <CommonHead title={title} description="" />
+    <CommonHead title={title} description={description} />
   </head>
-  <body>
+  <body id="top">
     <header>
       <nav>
-        <a href="/">Home</a>
+        <a href="/">
+          <img
+            class="top-logo"
+            src="/img/icon.png"
+            alt="Civ Books Logo"
+            style="float: right"
+          />
+        </a>
+        <a class="back-home" href="/">Civ Books</a>
         <Search
           id="search1"
           className="pagefind-ui"
@@ -24,10 +35,8 @@ import CommonHead from "../components/CommonHead.astro";
         />
       </nav>
     </header>
-    <article>
-      <slot />
-      <!-- content is injected in the slot element -->
-    </article>
+    <slot />
+    <!-- content is injected in the slot element -->
     <Footer />
   </body>
 </html>

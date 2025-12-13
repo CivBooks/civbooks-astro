@@ -1,10 +1,8 @@
 ---
-import { getCollection, render } from "astro:content";
 import type { GetStaticPathsItem } from "astro";
-import { getEntry } from "astro:content";
+import { getCollection, getEntry } from "astro:content";
 
-import CommonHead from "../../../../components/CommonHead.astro";
-import Footer from "../../../../components/Footer.astro";
+import Base from "../../../../layouts/base.astro";
 
 export async function getStaticPaths() {
   const books = await getCollection("books");
@@ -33,97 +31,74 @@ const safe_server = server.replaceAll(" ", "_").replaceAll(".0", "");
 const description = `Signed by ${signee} on ${server}. Read ${pages.length <= 1 ? "it" : `all ${pages.length} pages`} here and discover more Civ books.`;
 ---
 
-<html lang="en">
-  <head>
-    <CommonHead
-      title={`${title} - by ${signee} - Civ Books`}
-      description={description}
-    />
-    <link rel="prefetch" href="/font/Minecraft-Regular.otf" />
-    <link rel="prefetch" href="/img/page.png" />
-    <link rel="stylesheet" href="/style.css" />
-  </head>
-  <body id="top">
-    <header>
-      <a href="/">
-        <img
-          class="top-logo"
-          src="/img/icon.png"
-          alt="Civ Books Logo"
-          style="float: right"
-        />
+<Base title={`${title} - by ${signee} - Civ Books`} description={description}>
+  <h1>
+    {title}
+  </h1>
+  <div class="book-metadata">
+    <a href=`/?search=:signee:${signee}`>
+      <img
+        class="author-face"
+        src=`https://www.mc-heads.net/avatar/${signee}`
+        title=`Face of ${signee}`
+        alt=`Face of ${signee}`
+      />
+    </a>
+    <div class="signee">
+      Signed by <a class="signee-name" href=`/?search=:signee:${signee}`>
+        <span data-pagefind-weight="6" data-pagefind-filter="signee">
+          {signee}
+        </span>
       </a>
-      <a class="back-home" href="/">Civ Books</a>
-    </header>
-    <h1>
-      {title}
-    </h1>
-    <div class="book-metadata">
-      <a href=`/?search=:signee:${signee}`>
-        <img
-          class="author-face"
-          src=`https://www.mc-heads.net/avatar/${signee}`
-          title=`Face of ${signee}`
-          alt=`Face of ${signee}`
-        />
-      </a>
-      <div class="signee">
-        Signed by <a class="signee-name" href=`/?search=:signee:${signee}`>
-          <span data-pagefind-weight="6" data-pagefind-filter="signee">
-            {signee}
-          </span>
-        </a>
-      </div>
-      <div class="source" data-pagefind-weight="6">
-        on <a class="source-server" href=`/?search=:server:${safe_server}`>
-          <span data-pagefind-weight="6" data-pagefind-filter="server">
-            {server}
-          </span>
-        </a>
-      </div>
     </div>
-    <div class="book">
-      {
-        pages.map((pageRaw, pageNr) => {
-          ++pageNr; // start at 1
-          // TODO use JSX instead of `set:html`. this is copied from python to make it work
-          let styled_content = "";
-          // line breaks reset all formatting
-          let tags_to_close = 0; // number of </span> to insert at next §r
-          const re = /§([0-9a-fA-FklmnorKLMNOR])|\n|[^§]+|§/g;
-          for (const [fullmatch, fcode] of pageRaw.matchAll(re).toArray()) {
-            if (fullmatch == "§") {
-              // stray section sign with wrong format code following; invisible
-              styled_content += `<span class="fmtcode">§</span>`;
-            } else if (!fcode && fullmatch !== "\n") {
-              // content segment
-              styled_content += fullmatch;
-            } else if (fullmatch == "\n") {
-              // newline reset
-              while (tags_to_close-- > 0) styled_content += "</span>";
-              styled_content += "\n";
-            } else if (fcode.toLowerCase() == "r") {
-              // reset segment
-              while (tags_to_close-- > 0) styled_content += "</span>";
-              styled_content += `<span class="fmtcode">§${fcode}</span>`;
-            } else {
-              // formatting segment
-              styled_content += `<span class="fmt${fcode.toLowerCase()}">`;
-              styled_content += `<span class="fmtcode">§${fcode}</span>`;
-              tags_to_close += 1;
-            }
+    <div class="source" data-pagefind-weight="6">
+      on <a class="source-server" href=`/?search=:server:${safe_server}`>
+        <span data-pagefind-weight="6" data-pagefind-filter="server">
+          {server}
+        </span>
+      </a>
+    </div>
+  </div>
+  <div class="book">
+    {
+      pages.map((pageRaw, pageNr) => {
+        ++pageNr; // start at 1
+        // TODO use JSX instead of `set:html`. this is copied from python to make it work
+        let styled_content = "";
+        // line breaks reset all formatting
+        let tags_to_close = 0; // number of </span> to insert at next §r
+        const re = /§([0-9a-fA-FklmnorKLMNOR])|\n|[^§]+|§/g;
+        for (const [fullmatch, fcode] of pageRaw.matchAll(re).toArray()) {
+          if (fullmatch == "§") {
+            // stray section sign with wrong format code following; invisible
+            styled_content += `<span class="fmtcode">§</span>`;
+          } else if (!fcode && fullmatch !== "\n") {
+            // content segment
+            styled_content += fullmatch;
+          } else if (fullmatch == "\n") {
+            // newline reset
+            while (tags_to_close-- > 0) styled_content += "</span>";
+            styled_content += "\n";
+          } else if (fcode.toLowerCase() == "r") {
+            // reset segment
+            while (tags_to_close-- > 0) styled_content += "</span>";
+            styled_content += `<span class="fmtcode">§${fcode}</span>`;
+          } else {
+            // formatting segment
+            styled_content += `<span class="fmt${fcode.toLowerCase()}">`;
+            styled_content += `<span class="fmtcode">§${fcode}</span>`;
+            tags_to_close += 1;
           }
-          return (
-            <div class="page" id={`page-${1 + pageNr}`}>
-              <a href="#page-{page_nr}" class="page-indicator">
-                Page {pageNr} of {pages.length}
-              </a>
-              <div class="page-content" set:html={styled_content} />
-            </div>
-          );
-        })
-      }
-    </div>
-    <Footer />
-  </body>
-</html>
+        }
+        return (
+          <div class="page" id={`page-${1 + pageNr}`}>
+            <a href="#page-{page_nr}" class="page-indicator">
+              Page {pageNr} of {pages.length}
+            </a>
+            <div class="page-content" set:html={styled_content} />
+          </div>
+        );
+      })
+    }
+  </div>
+</Base>
