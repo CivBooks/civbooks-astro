@@ -15,8 +15,7 @@ body>h2,
 body>h3,
 body>form,
 body>div,
-body>p,
-body>footer {
+body>p {
     margin-left: auto;
     margin-right: auto;
     max-width: 584px;
@@ -128,18 +127,6 @@ a:visited {
 img.top-logo,
 img.bottom-logo {
     width: 64px;
-}
-
-footer {
-    text-align: center;
-}
-
-footer,
-#search-hints,
-.search-hints {
-    border-top: 2px solid #ccc;
-    /* padding-top: 1em; */
-    margin-top: 1em;
 }
 
 .search-form {
