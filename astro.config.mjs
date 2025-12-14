@@ -13,6 +13,10 @@ export default defineConfig({
         keepIndexUrl: true,
       },
     }),
-    sitemap(),
+    sitemap({
+      changefreq: "monthly",
+      priority: 0.7,
+      lastmod: new Date(),
+    }),
   ],
 });
