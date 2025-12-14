@@ -57,7 +57,7 @@ const signeeAvatar = `https://www.mc-heads.net/avatar/${signee}`;
         </span>
       </a>
     </div>
-    <div class="source" data-pagefind-weight="6">
+    <div class="source">
       on <a class="source-server" href=`/?search=:server:${safe_server}`>
         <span data-pagefind-weight="6" data-pagefind-filter="server">
           {server}
@@ -96,9 +96,10 @@ const signeeAvatar = `https://www.mc-heads.net/avatar/${signee}`;
             tags_to_close += 1;
           }
         }
+        const pageId = `page-${pageNr}`;
         return (
-          <div class="page" id={`page-${1 + pageNr}`}>
-            <a href="#page-{page_nr}" class="page-indicator">
+          <div class="page" id={pageId}>
+            <a href={`#${pageId}`} class="page-indicator">
               Page {pageNr} of {pages.length}
             </a>
             <div class="page-content" set:html={styled_content} />
