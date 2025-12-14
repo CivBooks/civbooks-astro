@@ -4,6 +4,7 @@ interface Props {
   description: string;
 }
 const { title, description } = Astro.props;
+import "../styles/style.css";
 ---
 
 <meta charset="UTF-8" />
@@ -27,6 +28,3 @@ const { title, description } = Astro.props;
 <!-- Faster first complete render -->
 <link rel="prefetch" href="/font/Minecraft-Regular.otf" />
 <link rel="prefetch" href="/img/page.png" />
-
-<!-- TODO styles -->
-<link rel="stylesheet" href="/style.css" />
