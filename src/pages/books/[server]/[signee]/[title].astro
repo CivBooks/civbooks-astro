@@ -1,6 +1,7 @@
 ---
 import type { GetStaticPathsItem } from "astro";
 import { getCollection, getEntry } from "astro:content";
+import { Image } from "astro:assets";
 
 import Base from "../../../../layouts/base.astro";
 
@@ -29,6 +30,8 @@ const { server, signee, title, pages } = book.data;
 const safe_server = server.replaceAll(" ", "_").replaceAll(".0", "");
 
 const description = `Signed by ${signee} on ${server}. Read ${pages.length <= 1 ? "it" : `all ${pages.length} pages`} here and discover more Civ books.`;
+
+const signeeAvatar = `https://www.mc-heads.net/avatar/${signee}`;
 ---
 
 <Base title={`${title} - by ${signee} - Civ Books`} description={description}>
@@ -37,11 +40,13 @@ const description = `Signed by ${signee} on ${server}. Read ${pages.length <= 1 
   </h1>
   <div class="book-metadata">
     <a href=`/?search=:signee:${signee}`>
-      <img
-        class="author-face"
-        src=`https://www.mc-heads.net/avatar/${signee}`
-        title=`Face of ${signee}`
+      <Image
+        src={signeeAvatar}
         alt=`Face of ${signee}`
+        title=`Face of ${signee}`
+        inferSize
+        class="author-face"
+        priority
       />
     </a>
     <div class="signee">
