@@ -84,10 +84,12 @@ const signeeAvatar = `https://www.mc-heads.net/avatar/${signee}`;
           } else if (fullmatch == "\n") {
             // newline reset
             while (tags_to_close-- > 0) styled_content += "</span>";
+            tags_to_close = 0; // prevent negative
             styled_content += "\n";
           } else if (fcode.toLowerCase() == "r") {
             // reset segment
             while (tags_to_close-- > 0) styled_content += "</span>";
+            tags_to_close = 0; // prevent negative
             styled_content += `<span class="fmtcode">§${fcode}</span>`;
           } else {
             // formatting segment
