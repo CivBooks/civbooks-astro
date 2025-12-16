@@ -4,6 +4,7 @@ import { getCollection, getEntry } from "astro:content";
 import { Image } from "astro:assets";
 
 import Base from "../../../../layouts/base.astro";
+import DownloadButton from "../../../../components/Download";
 
 export async function getStaticPaths() {
   const books = await getCollection("books");
@@ -25,7 +26,7 @@ const book = await (async () => {
   return entry;
 })();
 
-const { server, signee, title, pages } = book.data;
+const { server, signee, title, pages, file } = book.data;
 
 const safe_server = server.replaceAll(" ", "_").replaceAll(".0", "");
 
@@ -64,6 +65,11 @@ const signeeAvatar = `https://www.mc-heads.net/avatar/${signee}`;
         </span>
       </a>
     </div>
+    <DownloadButton
+      fileContent={file.content}
+      fileName={file.name}
+      client:load
+    />
   </div>
   <div class="book">
     {

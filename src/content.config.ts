@@ -11,6 +11,10 @@ export const bookSchema = z.object({
   signee: z.string(),
   title: z.string(),
   pages: z.array(z.string()),
+  file: z.object({
+    content: z.string(),
+    name: z.string(),
+  }),
 });
 
 export type Book = z.infer<typeof bookSchema>;
@@ -46,7 +50,17 @@ const parsers: { [ending: string]: (path: string) => Book } = {
       while (pages.length && !pages.at(-1)) pages.pop();
 
       const id = [server, signee, title].map(clean).join("/");
-      return { id, server, signee, title, pages };
+      return {
+        id,
+        server,
+        signee,
+        title,
+        pages,
+        file: {
+          content: file,
+          name: path.split(SEPERATOR).pop() ?? title,
+        },
+      };
     } catch (err) {
       console.error(`Error in ${path}:`, err);
       throw err;
