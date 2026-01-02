@@ -4,6 +4,7 @@ interface Props {
   description: string;
 }
 const { title, description } = Astro.props;
+import "../styles/style.css";
 ---
 
 <meta charset="UTF-8" />
@@ -13,6 +14,7 @@ const { title, description } = Astro.props;
 <link rel="shortcut icon" type="image/x-icon" href="/img/icon.png" />
 <!-- <link rel="icon" type="image/svg+xml" href="/favicon.svg" /> -->
 <meta name="generator" content={Astro.generator} />
+<link rel="sitemap" href="/sitemap-index.xml" />
 
 <!-- OpenGraph -->
 <meta property="og:type" content="object" />
@@ -20,11 +22,9 @@ const { title, description } = Astro.props;
 <meta property="og:description" content={description} />
 <meta property="og:site_name" content="Civ Books" />
 <meta property="og:url" content="https://CivBooks.github.io/" />
+<!-- TODO: make this use satori for dynamic og images -->
 <meta property="og:image" content="https://CivBooks.github.io/img/icon.png" />
 
 <!-- Faster first complete render -->
 <link rel="prefetch" href="/font/Minecraft-Regular.otf" />
 <link rel="prefetch" href="/img/page.png" />
-
-<!-- TODO styles -->
-<link rel="stylesheet" href="/style.css" />

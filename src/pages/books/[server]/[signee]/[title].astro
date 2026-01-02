@@ -1,8 +1,10 @@
 ---
 import type { GetStaticPathsItem } from "astro";
 import { getCollection, getEntry } from "astro:content";
+import { Image } from "astro:assets";
 
 import Base from "../../../../layouts/base.astro";
+import DownloadButton from "../../../../components/Download";
 
 export async function getStaticPaths() {
   const books = await getCollection("books");
@@ -24,11 +26,13 @@ const book = await (async () => {
   return entry;
 })();
 
-const { server, signee, title, pages } = book.data;
+const { server, signee, title, pages, file } = book.data;
 
 const safe_server = server.replaceAll(" ", "_").replaceAll(".0", "");
 
 const description = `Signed by ${signee} on ${server}. Read ${pages.length <= 1 ? "it" : `all ${pages.length} pages`} here and discover more Civ books.`;
+
+const signeeAvatar = `https://www.mc-heads.net/avatar/${signee}`;
 ---
 
 <Base title={`${title} - by ${signee} - Civ Books`} description={description}>
@@ -37,11 +41,14 @@ const description = `Signed by ${signee} on ${server}. Read ${pages.length <= 1 
   </h1>
   <div class="book-metadata">
     <a href=`/?search=:signee:${signee}`>
-      <img
-        class="author-face"
-        src=`https://www.mc-heads.net/avatar/${signee}`
-        title=`Face of ${signee}`
+      <Image
+        src={signeeAvatar}
         alt=`Face of ${signee}`
+        title=`Face of ${signee}`
+        height={180}
+        width={180}
+        class="author-face"
+        priority
       />
     </a>
     <div class="signee">
@@ -51,13 +58,18 @@ const description = `Signed by ${signee} on ${server}. Read ${pages.length <= 1 
         </span>
       </a>
     </div>
-    <div class="source" data-pagefind-weight="6">
+    <div class="source">
       on <a class="source-server" href=`/?search=:server:${safe_server}`>
         <span data-pagefind-weight="6" data-pagefind-filter="server">
           {server}
         </span>
       </a>
     </div>
+    <DownloadButton
+      fileContent={file.content}
+      fileName={file.name}
+      client:load
+    />
   </div>
   <div class="book">
     {
@@ -78,10 +90,12 @@ const description = `Signed by ${signee} on ${server}. Read ${pages.length <= 1 
           } else if (fullmatch == "\n") {
             // newline reset
             while (tags_to_close-- > 0) styled_content += "</span>";
+            tags_to_close = 0; // prevent negative
             styled_content += "\n";
           } else if (fcode.toLowerCase() == "r") {
             // reset segment
             while (tags_to_close-- > 0) styled_content += "</span>";
+            tags_to_close = 0; // prevent negative
             styled_content += `<span class="fmtcode">§${fcode}</span>`;
           } else {
             // formatting segment
@@ -90,9 +104,10 @@ const description = `Signed by ${signee} on ${server}. Read ${pages.length <= 1 
             tags_to_close += 1;
           }
         }
+        const pageId = `page-${pageNr}`;
         return (
-          <div class="page" id={`page-${1 + pageNr}`}>
-            <a href="#page-{page_nr}" class="page-indicator">
+          <div class="page" id={pageId}>
+            <a href={`#${pageId}`} class="page-indicator">
               Page {pageNr} of {pages.length}
             </a>
             <div class="page-content" set:html={styled_content} />

@@ -1,3 +1,5 @@
+/* TODO: styles */
+
 html {
     color: #111;
     background-color: #def;
@@ -9,31 +11,37 @@ body {
     font: 16px / 1.5 sans-serif;
 }
 
-body > header,
-body > h1,
-body > h2,
-body > h3,
-body > form,
-body > div,
-body > p,
-body > footer {
+body>header,
+body>h1,
+body>h2,
+body>h3,
+body>form,
+body>div,
+body>p {
     margin-left: auto;
     margin-right: auto;
-    max-width: 584px; /* two book pages wide */
+    max-width: 584px;
+    /* two book pages wide */
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
     line-height: 1.25;
 }
 
 a {
     color: #008;
 }
+
 a:visited {
     color: #55c;
 }
 
-.muted, .muted:visited, .muted a, .muted a:visited {
+.muted,
+.muted:visited,
+.muted a,
+.muted a:visited {
     color: #888;
 }
 
@@ -57,8 +65,16 @@ a:visited {
     }
 }
 
-@font-face { font-family: 'minecraft pixel perfect'; src: url('/font/Minecraft-Regular.otf'); }
-@font-face { font-family: 'minecraft pixel perfect'; src: url('/font/Minecraft-Bold.ttf'); font-weight: bold; }
+@font-face {
+    font-family: 'minecraft pixel perfect';
+    src: url('/font/Minecraft-Regular.otf');
+}
+
+@font-face {
+    font-family: 'minecraft pixel perfect';
+    src: url('/font/Minecraft-Bold.ttf');
+    font-weight: bold;
+}
 
 .author-face {
     float: right;
@@ -75,7 +91,8 @@ a:visited {
     flex-wrap: wrap;
     justify-content: center;
     align-content: space-around;
-    min-width: 260px; /* page width - 2 * body margin */
+    min-width: 260px;
+    /* page width - 2 * body margin */
 }
 
 .page {
@@ -109,20 +126,9 @@ a:visited {
     /* necessary for line breaking */
 }
 
-img.top-logo, img.bottom-logo {
+img.top-logo,
+img.bottom-logo {
     width: 64px;
-}
-
-footer {
-    text-align: center;
-}
-
-footer,
-#search-hints,
-.search-hints {
-    border-top: 2px solid #ccc;
-    /* padding-top: 1em; */
-    margin-top: 1em;
 }
 
 .search-form {
@@ -153,6 +159,7 @@ footer,
     display: inline-block;
     padding-left: 0.5em;
 }
+
 .search-result .stats {
     float: right;
 }
@@ -163,23 +170,82 @@ footer,
     line-height: 0;
 }
 
-.fmtl { font-weight: bold; }
-.fmto { font-style: italic; }
-.fmtn { text-decoration: underline; }
-.fmtm { text-decoration-line: line-through; }
-.fmt4 { color: #be0000; }
-.fmtc { color: #fe3f3f; }
-.fmt6 { color: #D9A334; }
-.fmte { color: #fefe3f; }
-.fmt2 { color: #00be00; }
-.fmta { color: #3ffe3f; }
-.fmtb { color: #3ffefe; }
-.fmt3 { color: #00bebe; }
-.fmt1 { color: #0000be; }
-.fmt9 { color: #3f3ffe; }
-.fmtd { color: #fe3ffe; }
-.fmt5 { color: #be00be; }
-.fmtf { color: #ffffff; }
-.fmt7 { color: #bebebe; }
-.fmt8 { color: #3f3f3f; }
-.fmt0 { color: #000000; }
+.fmtl {
+    font-weight: bold;
+}
+
+.fmto {
+    font-style: italic;
+}
+
+.fmtn {
+    text-decoration: underline;
+}
+
+.fmtm {
+    text-decoration-line: line-through;
+}
+
+.fmt4 {
+    color: #be0000;
+}
+
+.fmtc {
+    color: #fe3f3f;
+}
+
+.fmt6 {
+    color: #D9A334;
+}
+
+.fmte {
+    color: #fefe3f;
+}
+
+.fmt2 {
+    color: #00be00;
+}
+
+.fmta {
+    color: #3ffe3f;
+}
+
+.fmtb {
+    color: #3ffefe;
+}
+
+.fmt3 {
+    color: #00bebe;
+}
+
+.fmt1 {
+    color: #0000be;
+}
+
+.fmt9 {
+    color: #3f3ffe;
+}
+
+.fmtd {
+    color: #fe3ffe;
+}
+
+.fmt5 {
+    color: #be00be;
+}
+
+.fmtf {
+    color: #ffffff;
+}
+
+.fmt7 {
+    color: #bebebe;
+}
+
+.fmt8 {
+    color: #3f3f3f;
+}
+
+.fmt0 {
+    color: #000000;
+}

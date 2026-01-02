@@ -1,0 +1,19 @@
+---
+import { Image } from "astro:assets";
+import logo from "../assets/logo.png";
+
+interface Props {
+  priority?: boolean;
+  class?: string;
+}
+const { priority, class: classOptions } = Astro.props;
+---
+
+<Image
+  src={logo}
+  alt="Civ Books Logo"
+  width={64}
+  height={64}
+  priority={priority ?? false}
+  class={classOptions ?? ""}
+/>
